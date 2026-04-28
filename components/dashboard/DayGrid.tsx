@@ -20,7 +20,6 @@ export default function DayGrid({ completedDays, currentDayNumber }: DayGridProp
               {days.map((day) => {
                 const isCompleted = completedDays.includes(day.dayNumber)
                 const isCurrent = day.dayNumber === currentDayNumber
-                const isUpcoming = !isCompleted && !isCurrent
 
                 return (
                   <Link

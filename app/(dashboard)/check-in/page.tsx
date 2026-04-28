@@ -3,6 +3,33 @@
 import { useState } from 'react'
 import { submitWeeklyCheckIn } from '@/lib/actions'
 
+function RatingButtons({
+  value,
+  onChange,
+}: {
+  value: number
+  onChange: (v: number) => void
+}) {
+  return (
+    <div className="flex gap-2">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button
+          key={n}
+          type="button"
+          onClick={() => onChange(n)}
+          className={`w-10 h-10 rounded-lg font-semibold text-sm transition-all ${
+            value === n
+              ? 'bg-green-600 text-white'
+              : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+          }`}
+        >
+          {n}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function CheckInPage() {
   const [weekNumber, setWeekNumber] = useState(1)
   const [workoutsCompleted, setWorkoutsCompleted] = useState(0)
@@ -35,27 +62,6 @@ export default function CheckInPage() {
       setSubmitted(true)
     }
     setLoading(false)
-  }
-
-  function RatingButtons({ value, onChange }: { value: number; onChange: (v: number) => void }) {
-    return (
-      <div className="flex gap-2">
-        {[1, 2, 3, 4, 5].map((n) => (
-          <button
-            key={n}
-            type="button"
-            onClick={() => onChange(n)}
-            className={`w-10 h-10 rounded-lg font-semibold text-sm transition-all ${
-              value === n
-                ? 'bg-green-600 text-white'
-                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-            }`}
-          >
-            {n}
-          </button>
-        ))}
-      </div>
-    )
   }
 
   if (submitted) {
