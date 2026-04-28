@@ -37,21 +37,22 @@ export default function LandingPage() {
 
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 md:gap-3 shrink-0">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-2 min-w-0">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl overflow-hidden flex-shrink-0">
               <Image src="/logo.jpg" alt="Transformer Workout Logo" width={40} height={40} className="w-full h-full object-cover" />
             </div>
-            <div className="font-[family-name:var(--font-barlow-condensed)] text-[1.1rem] md:text-xl font-black tracking-wide uppercase whitespace-nowrap leading-none pt-0.5">
+            <div className="hidden min-[440px]:block font-[family-name:var(--font-barlow-condensed)] text-[1rem] md:text-xl font-black tracking-wide uppercase whitespace-nowrap leading-none pt-0.5">
               TRANSFORMER <span className="text-orange-500">WORKOUT</span>
             </div>
           </div>
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <Link href="/login" className="border border-white/20 hover:border-orange-500/50 bg-white/5 hover:bg-white/10 text-white text-[13px] md:text-sm font-bold px-3 py-2 md:px-5 md:py-3 rounded-xl transition-all whitespace-nowrap">
               Log In
             </Link>
             <Link href="/signup" className="cta-btn shrink-0 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-[13px] md:text-sm font-bold px-4 py-2 md:px-6 md:py-3 rounded-xl neon-border whitespace-nowrap">
-              Join the Challenge
+              <span className="sm:hidden">Join</span>
+              <span className="hidden sm:inline">Join the Challenge</span>
             </Link>
           </div>
         </div>
@@ -80,8 +81,8 @@ export default function LandingPage() {
                 No extreme diets. No gym required. No experience needed. A simple, structured plan built around your real life.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/signup" className="cta-btn bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold px-8 py-5 rounded-xl text-center flex-1 shadow-lg shadow-orange-500/20 text-lg whitespace-nowrap">
-                  Start the Challenge &middot; $27
+                <Link href="/signup" className="cta-btn bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold px-6 py-5 sm:px-8 rounded-xl text-center flex-1 shadow-lg shadow-orange-500/20 text-base sm:text-lg">
+                  Start the Challenge <span className="whitespace-nowrap">&middot; $27</span>
                 </Link>
                 <Link href="/login" className="group border border-white/20 hover:border-orange-500/50 bg-white/5 hover:bg-white/10 text-gray-100 hover:text-white font-bold text-lg px-10 py-5 rounded-2xl text-center transition-all flex items-center justify-center gap-2">
                   Log In
