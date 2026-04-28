@@ -181,10 +181,10 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-6 mb-20">
             {[
               { icon: '⚡', title: 'Running on Empty', body: 'You wake up tired. Push through the day. By the time everyone\'s handled, there\'s nothing left for you.' },
-              { icon: '📅', title: 'No Time, No Plan', body: 'You\'ve tried to get back on track. But random workouts and guessing hasn\'t worked. You need a real structure.', offset: true },
+              { icon: '📅', title: 'No Time, No Plan', body: 'You\'ve tried to get back on track. But random workouts and guessing hasn\'t worked. You need a real structure.' },
               { icon: '🏠', title: 'The House Needs You', body: 'Your family counts on you showing up. You can\'t pour from an empty cup. Your health is the foundation.' },
-            ].map(({ icon, title, body, offset }, i) => (
-              <div key={i} className={`glass-card glass-card-hover rounded-3xl p-8 transition-all duration-300 section-reveal neon-border${offset ? ' md:translate-y-12' : ''}`} style={{ animationDelay: `${0.1 * (i + 1)}s` }}>
+            ].map(({ icon, title, body }, i) => (
+              <div key={i} className="glass-card glass-card-hover rounded-3xl p-8 transition-all duration-300 section-reveal neon-border" style={{ animationDelay: `${0.1 * (i + 1)}s` }}>
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/30 to-orange-600/10 flex items-center justify-center mb-6">
                   <span className="text-3xl">{icon}</span>
                 </div>
