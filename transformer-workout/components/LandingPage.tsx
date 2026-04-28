@@ -46,9 +46,9 @@ export default function LandingPage() {
               TRANSFORMER <span className="text-orange-500">WORKOUT</span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-gray-400 hover:text-white text-sm font-medium transition-colors hidden sm:block">
-              Sign In
+          <div className="flex items-center gap-2 md:gap-3">
+            <Link href="/login" className="border border-white/20 hover:border-orange-500/50 bg-white/5 hover:bg-white/10 text-white text-[13px] md:text-sm font-bold px-3 py-2 md:px-5 md:py-3 rounded-xl transition-all whitespace-nowrap">
+              Log In
             </Link>
             <Link href="/signup" className="cta-btn shrink-0 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-[13px] md:text-sm font-bold px-4 py-2 md:px-6 md:py-3 rounded-xl neon-border whitespace-nowrap">
               Join the Challenge
@@ -83,11 +83,17 @@ export default function LandingPage() {
                 <Link href="/signup" className="cta-btn bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold px-8 py-5 rounded-xl text-center flex-1 shadow-lg shadow-orange-500/20 text-lg whitespace-nowrap">
                   Start the Challenge &middot; $27
                 </Link>
-                <a href="#how-it-works" className="group border border-white/20 hover:border-orange-500/50 text-gray-300 hover:text-white font-medium text-lg px-10 py-5 rounded-2xl text-center transition-all flex items-center justify-center gap-2">
-                  See How It Works
+                <Link href="/login" className="group border border-white/20 hover:border-orange-500/50 bg-white/5 hover:bg-white/10 text-gray-100 hover:text-white font-bold text-lg px-10 py-5 rounded-2xl text-center transition-all flex items-center justify-center gap-2">
+                  Log In
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                </a>
+                </Link>
               </div>
+              <p className="text-gray-500 text-sm mb-8">
+                Already have an account?{' '}
+                <Link href="/login" className="text-orange-400 hover:text-orange-300 font-semibold">
+                  Log in and go to your dashboard.
+                </Link>
+              </p>
               <div className="flex flex-wrap gap-6 text-sm">
                 <div className="flex items-center gap-2"><span className="text-green-400">✓</span><span className="text-gray-400">Self-Paced Structure</span></div>
                 <div className="flex items-center gap-2"><span className="text-green-400">✓</span><span className="text-gray-400">Home or Gym-Friendly</span></div>
