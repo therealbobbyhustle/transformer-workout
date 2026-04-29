@@ -1,3 +1,31 @@
+export type DayCategory = 'workout' | 'recovery' | 'mobility' | 'rest'
+
+export interface Exercise {
+  name: string
+  sets?: number
+  reps?: string
+  note?: string
+}
+
+export interface ExerciseGroup {
+  label?: string
+  exercises: Exercise[]
+}
+
+export interface ChallengeDay {
+  dayNumber: number
+  weekNumber: number
+  weekLabel: string
+  calendarLabel: string
+  title: string
+  duration: string
+  category: DayCategory
+  description: string
+  focus: string
+  videoUrl: string | null
+  exerciseGroups: ExerciseGroup[]
+}
+
 export interface UserProgress {
   id: string
   user_id: string
