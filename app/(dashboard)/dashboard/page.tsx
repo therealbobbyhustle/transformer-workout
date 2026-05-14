@@ -110,17 +110,29 @@ export default async function DashboardPage() {
             </div>
           )}
 
-          {/* Video placeholder */}
-          <div className="bg-zinc-800 rounded-lg aspect-video flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-zinc-700 rounded-full flex items-center justify-center mx-auto mb-2">
-                <svg className="w-5 h-5 text-zinc-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                </svg>
-              </div>
-              <p className="text-zinc-500 text-sm">Video coming soon</p>
+          {currentDay.videoUrl ? (
+            <div className="overflow-hidden rounded-lg bg-black">
+              <video
+                className="aspect-video w-full object-cover"
+                src={currentDay.videoUrl}
+                poster={currentDay.posterUrl ?? undefined}
+                playsInline
+                controls
+                preload="none"
+              />
             </div>
-          </div>
+          ) : (
+            <div className="bg-zinc-800 rounded-lg aspect-video flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-zinc-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <svg className="w-5 h-5 text-zinc-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                  </svg>
+                </div>
+                <p className="text-zinc-500 text-sm">Video coming soon</p>
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-col gap-2">
             {!completedDays.includes(currentDay.dayNumber) && (

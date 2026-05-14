@@ -15,12 +15,25 @@ export const CHALLENGE_DAYS: ChallengeDay[] = [
     category: 'workout',
     focus: 'Learning movements, control, breathing',
     description: 'Your first session of the challenge. Focus on form over speed. Control every rep and learn the movements before you push the weight.',
-    videoUrl: null,
+    videoUrl: 'https://ywjehzojbphjwiabjjiq.supabase.co/storage/v1/object/public/workout-videos/week-01/day-01/01-dumbbell-squat-overhead-press.mp4?v=20260514-corrected',
+    posterUrl: 'https://ywjehzojbphjwiabjjiq.supabase.co/storage/v1/object/public/workout-videos/week-01/day-01/01-dumbbell-squat-overhead-press.jpg?v=20260514-visible',
     exerciseGroups: [
       {
         exercises: [
-          { name: 'Dumbbell Squat → Overhead Press', sets: 3, reps: '12 reps' },
-          { name: 'Reverse Lunges', sets: 3, reps: '10 each leg' },
+          {
+            name: 'Dumbbell Squat → Overhead Press',
+            sets: 3,
+            reps: '12 reps',
+            videoUrl: 'https://ywjehzojbphjwiabjjiq.supabase.co/storage/v1/object/public/workout-videos/week-01/day-01/01-dumbbell-squat-overhead-press.mp4?v=20260514-corrected',
+            posterUrl: 'https://ywjehzojbphjwiabjjiq.supabase.co/storage/v1/object/public/workout-videos/week-01/day-01/01-dumbbell-squat-overhead-press.jpg?v=20260514-visible',
+          },
+          {
+            name: 'Reverse Lunges',
+            sets: 3,
+            reps: '10 each leg',
+            videoUrl: 'https://ywjehzojbphjwiabjjiq.supabase.co/storage/v1/object/public/workout-videos/week-01/day-01/02-reverse-lunges.mp4',
+            posterUrl: 'https://ywjehzojbphjwiabjjiq.supabase.co/storage/v1/object/public/workout-videos/week-01/day-01/02-reverse-lunges.jpg?v=20260514-visible',
+          },
           { name: 'Bent Over Rows', sets: 3, reps: '12 reps' },
           { name: 'Push-Ups', sets: 3, reps: '10 reps' },
           { name: 'Plank Hold', sets: 3, reps: '30 sec' },

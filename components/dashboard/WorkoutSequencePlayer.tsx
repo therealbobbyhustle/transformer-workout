@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ExerciseGroup } from '@/lib/types'
 
 interface WorkoutSequencePlayerProps {
@@ -29,16 +29,51 @@ export default function WorkoutSequencePlayer({
       name: exercise.name,
       detail: getExerciseDetail(exercise.sets, exercise.reps),
       note: exercise.note,
+      videoUrl: exercise.videoUrl,
+      posterUrl: exercise.posterUrl,
     }))
   )
 
   const [activeStep, setActiveStep] = useState(0)
-
-  if (steps.length === 0) return null
-
+  const [hasStartedWorkout, setHasStartedWorkout] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const currentStep = steps[activeStep]
+  const shouldShowStartPoster = Boolean(currentStep?.posterUrl && !hasStartedWorkout)
+
+  useEffect(() => {
+    const video = videoRef.current
+
+    if (!video || !currentStep?.videoUrl) return
+    if (!hasStartedWorkout) return
+
+    video.currentTime = 0
+    video.muted = false
+
+    void video.play().catch(() => {
+      // Some browsers still require another user gesture after changing videos.
+    })
+  }, [currentStep?.videoUrl, hasStartedWorkout])
+
+  if (steps.length === 0 || !currentStep) return null
+
   const isFirstStep = activeStep === 0
   const isLastStep = activeStep === steps.length - 1
+  const goToPreviousStep = () => setActiveStep((step) => Math.max(step - 1, 0))
+  const goToNextStep = () => setActiveStep((step) => Math.min(step + 1, steps.length - 1))
+  const handleVideoEnded = () => {
+    if (!isLastStep) goToNextStep()
+  }
+  const startWorkout = () => {
+    const video = videoRef.current
+
+    if (!video) return
+
+    video.muted = false
+    setHasStartedWorkout(true)
+    void video.play().catch(() => {
+      setHasStartedWorkout(false)
+    })
+  }
 
   return (
     <div className="space-y-4">
@@ -57,7 +92,6 @@ export default function WorkoutSequencePlayer({
       </div>
 
       <div className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900" />
         <div className="absolute left-0 right-0 top-0 h-1 bg-zinc-800">
           <div
             className="h-full bg-gradient-to-r from-orange-500 to-amber-400 transition-all duration-300"
@@ -65,34 +99,71 @@ export default function WorkoutSequencePlayer({
           />
         </div>
 
-        <div className="relative flex aspect-video flex-col justify-between p-5 sm:p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
-                {currentStep.groupLabel ?? dayTitle}
-              </p>
-              <h3 className="mt-2 max-w-xl text-2xl font-bold leading-tight text-white sm:text-3xl">
-                {currentStep.name}
-              </h3>
-              <p className="mt-2 text-base font-medium text-orange-300">{currentStep.detail}</p>
-              {currentStep.note && (
-                <p className="mt-2 max-w-lg text-sm leading-relaxed text-zinc-400">
-                  {currentStep.note}
-                </p>
-              )}
+        <div className="relative aspect-video bg-black">
+          {currentStep.videoUrl ? (
+            <video
+              key={currentStep.videoUrl}
+              ref={videoRef}
+              className="h-full w-full object-cover"
+              src={currentStep.videoUrl}
+              poster={currentStep.posterUrl}
+              playsInline
+              controls
+              preload={hasStartedWorkout ? 'metadata' : 'none'}
+              onPlay={() => setHasStartedWorkout(true)}
+              onEnded={handleVideoEnded}
+            />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-5 text-center">
+              <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-zinc-700 bg-zinc-800/80">
+                <svg className="ml-1 h-6 w-6 text-zinc-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                </svg>
+              </div>
+              <p className="text-sm font-medium text-zinc-500">Video coming soon</p>
             </div>
-
-            <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-zinc-700 bg-zinc-800/80">
-              <svg className="ml-1 h-6 w-6 text-zinc-400" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-              </svg>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between gap-3 pt-6">
+          )}
+          {shouldShowStartPoster && currentStep.posterUrl && (
             <button
               type="button"
-              onClick={() => setActiveStep((step) => Math.max(step - 1, 0))}
+              onClick={startWorkout}
+              className="absolute inset-0 flex h-full w-full items-center justify-center overflow-hidden bg-black text-white"
+              style={{
+                backgroundImage: `url(${currentStep.posterUrl})`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+              }}
+              aria-label={`Play ${currentStep.name}`}
+            >
+              <span className="absolute flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-black/55 shadow-2xl backdrop-blur-sm transition-transform hover:scale-105">
+                <svg className="ml-1 h-7 w-7" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                </svg>
+              </span>
+            </button>
+          )}
+        </div>
+
+        <div className="relative space-y-4 p-4 sm:p-5">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
+              {currentStep.groupLabel ?? dayTitle}
+            </p>
+            <h3 className="mt-2 text-xl font-bold leading-tight text-white sm:text-2xl">
+              {currentStep.name}
+            </h3>
+            <p className="mt-2 text-base font-medium text-orange-300">{currentStep.detail}</p>
+            {currentStep.note && (
+              <p className="mt-2 max-w-lg text-sm leading-relaxed text-zinc-400">
+                {currentStep.note}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={goToPreviousStep}
               disabled={isFirstStep}
               className="min-h-12 rounded-xl border border-zinc-700 bg-zinc-900 px-4 text-sm font-medium text-zinc-300 transition-colors hover:border-zinc-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
             >
@@ -100,12 +171,16 @@ export default function WorkoutSequencePlayer({
             </button>
 
             <p className="text-center text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
-              Video slot for this move
+              {currentStep.videoUrl
+                ? hasStartedWorkout
+                  ? 'Next video auto-plays'
+                  : 'Press play to start'
+                : 'Video pending'}
             </p>
 
             <button
               type="button"
-              onClick={() => setActiveStep((step) => Math.min(step + 1, steps.length - 1))}
+              onClick={goToNextStep}
               disabled={isLastStep}
               className="min-h-12 rounded-xl bg-orange-500 px-4 text-sm font-semibold text-white transition-colors hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-40"
             >

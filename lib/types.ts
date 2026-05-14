@@ -5,6 +5,8 @@ export interface Exercise {
   sets?: number
   reps?: string
   note?: string
+  videoUrl?: string
+  posterUrl?: string
 }
 
 export interface ExerciseGroup {
@@ -23,6 +25,7 @@ export interface ChallengeDay {
   description: string
   focus: string
   videoUrl: string | null
+  posterUrl?: string | null
   exerciseGroups: ExerciseGroup[]
 }
 
