@@ -3,6 +3,7 @@ import { getUserProgress, getCompletedDays } from '@/lib/actions'
 import { CHALLENGE_DAYS, getMotivationalLine } from '@/lib/challenge-data'
 import Link from 'next/link'
 import DayGrid from '@/components/dashboard/DayGrid'
+import DashboardWorkoutPreview from '@/components/dashboard/DashboardWorkoutPreview'
 import MarkCompleteButton from '@/components/dashboard/MarkCompleteButton'
 
 export default async function DashboardPage() {
@@ -90,48 +91,8 @@ export default async function DashboardPage() {
 
           <p className="text-zinc-400 text-sm leading-relaxed">{currentDay.description}</p>
 
-          {/* Exercise quick-list */}
           {currentDay.exerciseGroups.length > 0 && currentDay.category !== 'rest' && (
-            <div className="bg-zinc-800/50 rounded-lg p-3 space-y-1.5">
-              {currentDay.exerciseGroups.flatMap((g) => g.exercises).slice(0, 5).map((ex, i) => (
-                <div key={i} className="flex items-center justify-between text-sm">
-                  <span className="text-zinc-300">{ex.name}</span>
-                  {ex.sets && ex.reps && (
-                    <span className="text-zinc-500 text-xs">{ex.sets}×{ex.reps}</span>
-                  )}
-                  {!ex.sets && ex.reps && (
-                    <span className="text-zinc-500 text-xs">{ex.reps}</span>
-                  )}
-                </div>
-              ))}
-              {currentDay.exerciseGroups.flatMap((g) => g.exercises).length > 5 && (
-                <p className="text-zinc-600 text-xs pt-1">+ more — view full workout</p>
-              )}
-            </div>
-          )}
-
-          {currentDay.videoUrl ? (
-            <div className="overflow-hidden rounded-lg bg-black">
-              <video
-                className="aspect-video w-full object-cover"
-                src={currentDay.videoUrl}
-                poster={currentDay.posterUrl ?? undefined}
-                playsInline
-                controls
-                preload="none"
-              />
-            </div>
-          ) : (
-            <div className="bg-zinc-800 rounded-lg aspect-video flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-zinc-700 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <svg className="w-5 h-5 text-zinc-400 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                  </svg>
-                </div>
-                <p className="text-zinc-500 text-sm">Video coming soon</p>
-              </div>
-            </div>
+            <DashboardWorkoutPreview day={currentDay} />
           )}
 
           <div className="flex flex-col gap-2">
@@ -142,7 +103,7 @@ export default async function DashboardPage() {
               href={`/workout/${currentDay.dayNumber}`}
               className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-center font-medium py-3.5 rounded-xl transition-colors text-sm"
             >
-              View Full Workout
+              View Full Plan
             </Link>
           </div>
 

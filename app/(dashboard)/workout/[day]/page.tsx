@@ -23,6 +23,75 @@ const categoryColor: Record<string, string> = {
   rest: 'text-zinc-400 bg-zinc-800 border-zinc-700',
 }
 
+type MealPrepSuggestion = {
+  title: string
+  items: string[]
+  note: string
+}
+
+const workoutMealPrep: Record<number, MealPrepSuggestion> = {
+  1: {
+    title: 'Chicken rice bowls',
+    items: ['Grilled chicken breast or thighs', 'Brown rice or jasmine rice', 'Roasted broccoli and peppers'],
+    note: 'Prep two bowls so tomorrow has one easy, high-protein meal ready.',
+  },
+  3: {
+    title: 'Turkey taco bowls',
+    items: ['Lean ground turkey', 'Rice, beans, or sweet potato', 'Salsa, lettuce, and Greek-yogurt crema'],
+    note: 'Keep toppings separate so the bowl stays fresh after training.',
+  },
+  5: {
+    title: 'Salmon or chicken power plates',
+    items: ['Salmon or chicken', 'Sweet potatoes', 'Green beans or asparagus'],
+    note: 'This is a good lower-body day meal: protein, carbs, and color on the plate.',
+  },
+  6: {
+    title: 'Egg bake and snack boxes',
+    items: ['Egg bake with spinach and peppers', 'Greek yogurt or cottage cheese', 'Fruit and mixed nuts'],
+    note: 'Use this lighter prep to cover breakfast and a grab-and-go snack.',
+  },
+  8: {
+    title: 'Chicken burrito bowls',
+    items: ['Shredded chicken', 'Rice and black beans', 'Fajita vegetables and pico'],
+    note: 'Make enough for two lunches as the training volume starts to climb.',
+  },
+  10: {
+    title: 'Beef and vegetable stir-fry',
+    items: ['Lean beef or chicken', 'Frozen stir-fry vegetables', 'Rice or noodles'],
+    note: 'Cook the protein and vegetables together, then portion carbs based on hunger.',
+  },
+  12: {
+    title: 'Turkey meatballs and potatoes',
+    items: ['Turkey meatballs', 'Roasted potatoes', 'Side salad or steamed vegetables'],
+    note: 'A simple batch meal that reheats well after a leg and core session.',
+  },
+  13: {
+    title: 'Protein snack kit',
+    items: ['Hard-boiled eggs', 'Greek yogurt', 'Fruit, veggies, and hummus'],
+    note: 'Build a snack kit so the weekend does not turn into random grazing.',
+  },
+  15: {
+    title: 'High-protein pasta bake',
+    items: ['Chicken or turkey', 'Protein pasta or whole-grain pasta', 'Marinara and spinach'],
+    note: 'Portion it before the week gets busy so dinner is already handled.',
+  },
+  17: {
+    title: 'Sheet-pan chicken fajitas',
+    items: ['Chicken strips', 'Peppers and onions', 'Tortillas, rice, or lettuce cups'],
+    note: 'One pan, multiple meals, and easy portions for the final push.',
+  },
+  19: {
+    title: 'Steak or chicken meal boxes',
+    items: ['Lean steak or chicken', 'Rice or roasted potatoes', 'Broccoli or mixed vegetables'],
+    note: 'Keep this steady and familiar so nutrition supports the final lower-body day.',
+  },
+  20: {
+    title: 'Recovery-ready protein prep',
+    items: ['Chicken, salmon, or tofu', 'Quinoa or rice', 'Greens plus a fruit option'],
+    note: 'Set up tomorrow with protein and easy carbs so finishing strong does not become guesswork.',
+  },
+}
+
 export default async function WorkoutPage({ params }: WorkoutPageProps) {
   const { day } = await params
   const dayNumber = parseInt(day)
@@ -37,6 +106,7 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
 
   const nextDay = dayNumber < 21 ? getDay(dayNumber + 1) : null
   const prevDay = dayNumber > 1 ? getDay(dayNumber - 1) : null
+  const mealPrep = workoutMealPrep[challengeDay.dayNumber]
 
   return (
     <div className="space-y-6 pb-8">
@@ -106,14 +176,32 @@ export default async function WorkoutPage({ params }: WorkoutPageProps) {
         />
       )}
 
-      {/* Beginner / stronger options — workout days only */}
+      {/* Intensity modifiers and meal prep — workout days only */}
       {challengeDay.category === 'workout' && (
-        <div className="bg-zinc-900 rounded-xl p-4 border border-zinc-800">
-          <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-2.5">Your Options</p>
-          <div className="flex flex-wrap gap-2">
-            <span className="text-xs bg-zinc-800 text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded-full">Beginner friendly — reduce weight</span>
-            <span className="text-xs bg-zinc-800 text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded-full">Stronger option — increase weight</span>
+        <div className="space-y-4">
+          <div className="bg-zinc-900 rounded-xl p-4 border border-zinc-800">
+            <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-2.5">Intensity Modifiers</p>
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs bg-zinc-800 text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded-full">Lower intensity — reduce weight</span>
+              <span className="text-xs bg-zinc-800 text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded-full">Higher intensity — increase weight</span>
+            </div>
           </div>
+
+          {mealPrep && (
+            <div className="bg-zinc-900 rounded-xl p-4 border border-zinc-800">
+              <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-2.5">Suggested Meal Prep</p>
+              <h2 className="text-lg font-semibold text-white">{mealPrep.title}</h2>
+              <div className="mt-3 grid gap-2">
+                {mealPrep.items.map((item) => (
+                  <div key={item} className="flex items-center gap-2 text-sm text-zinc-300">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-400">{mealPrep.note}</p>
+            </div>
+          )}
         </div>
       )}
 
